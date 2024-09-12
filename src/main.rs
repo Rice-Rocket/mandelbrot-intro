@@ -23,7 +23,7 @@ fn mandelbrot(c: Complex<f32>) -> f32 {
         if z.abs() > 2.0 {
             // Color the pixel based on the number of iterations it completed before escaping.
             // This leads to brighter colors near the edge of the set.
-            // The logarithm ensures a nice falloff even with more iterations, while the clamp
+            // The logarithm ensures a nice falloff even with more iterations, while clamping it
             // ensures no pixels are too bright or dark.
             return f32::log(n as f32, NUM_ITERATIONS as f32).clamp(0.0, 1.0);
         }
