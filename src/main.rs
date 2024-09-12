@@ -14,14 +14,18 @@ fn mandelbrot(c: Complex<f32>) -> f32 {
     let mut z = c;
 
     // Loop through the following for NUM_ITERATIONS times.
-    for _ in 0..NUM_ITERATIONS {
+    for n in 0..NUM_ITERATIONS {
         // Update `z` via the Mandelbrot function
         // z = z² + c
         z = z * z + c;
 
-        // If `z` escapes the set, exit and return 1
+        // If `z` escapes the set, exit
         if z.abs() > 2.0 {
-            return 1.0;
+            // Color the pixel based on the number of iterations it completed before escaping.
+            // This leads to brighter colors near the edge of the set.
+            // The logarithm ensures a nice falloff even with more iterations, while the clamp
+            // ensures no pixels are too bright or dark.
+            return f32::log(n as f32, NUM_ITERATIONS as f32).clamp(0.0, 1.0);
         }
     }
 
