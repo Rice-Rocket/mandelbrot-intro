@@ -4,7 +4,7 @@ mod util;
 
 // The number of iterations used to find the edge of the mandelbrot set.
 // Note that larger numbers here will be slower to calculate, but lead to more detailed results.
-const NUM_ITERATIONS: u32 = 100;
+const NUM_ITERATIONS: u32 = 30;
 // The resolution of the image in pixels.
 // Final image will have IMAGE_SIZE x IMAGE_SIZE pixels.
 const IMAGE_SIZE: u32 = 2048;
