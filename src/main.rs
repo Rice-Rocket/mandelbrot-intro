@@ -8,6 +8,13 @@ const NUM_ITERATIONS: u32 = 100;
 // The resolution of the image in pixels.
 // Final image will have IMAGE_SIZE x IMAGE_SIZE pixels.
 const IMAGE_SIZE: u32 = 2048;
+// Where the rendered set is centered.
+// A value of (-0.625, 0.0) will center the set and (0.25, 0.0) will zoom in on main inset.
+const CENTER: Complex<f32> = Complex::new(0.00164372, -0.8224676);
+// The scale of the rendered set.
+// A smaller scale zooms in more.
+// When the center is (-0.625, 0.0), a scale of 0.7 will contain the entire set.
+const SCALE: f32 = 0.1;
 
 fn mandelbrot(c: Complex<f32>) -> f32 {
     // Initialize `z` at `c`.
@@ -34,9 +41,11 @@ fn mandelbrot(c: Complex<f32>) -> f32 {
 }
 
 #[inline]
-fn transform(c: Complex<f32>) -> Complex<f32> {
-    // Transform c to be in [-2, 2] in both real and imaginary axes
-    c * 4.0 - 2.0
+fn transform(mut c: Complex<f32>) -> Complex<f32> {
+    // Transform c to be in [-2, 2] in both real and imaginary axes.
+    c = c * 4.0 - 2.0;
+    // Transform c based on the dictated scale and center.
+    c * SCALE + CENTER
 }
 
 fn main() {
