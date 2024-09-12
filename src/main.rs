@@ -4,7 +4,7 @@ mod util;
 
 // The number of iterations used to find the edge of the mandelbrot set.
 // Note that larger numbers here will be slower to calculate, but lead to more detailed results.
-const NUM_ITERATIONS: u32 = 100;
+const NUM_ITERATIONS: u32 = 1000;
 // The resolution of the image in pixels.
 // Final image will have IMAGE_SIZE x IMAGE_SIZE pixels.
 const IMAGE_SIZE: u32 = 2048;
@@ -14,7 +14,7 @@ const CENTER: Complex<f32> = Complex::new(0.00164372, -0.8224676);
 // The scale of the rendered set.
 // A smaller scale zooms in more.
 // When the center is (-0.625, 0.0), a scale of 0.7 will contain the entire set.
-const SCALE: f32 = 0.1;
+const SCALE: f32 = 0.05;
 
 fn mandelbrot(c: Complex<f32>) -> f32 {
     // Initialize `z` at `c`.
