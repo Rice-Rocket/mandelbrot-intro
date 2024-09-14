@@ -65,7 +65,7 @@ fn main() {
             let m = mandelbrot(c);
 
             // Plot the result at the pixel coordinates.
-            im.put_pixel(x, y, Color::grayscale(m));
+            im.put_pixel(x, y, Color::grayscale(m).into());
         }
     }
 
