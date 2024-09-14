@@ -6,29 +6,105 @@ use image::{ImageBuffer, Pixel, PixelWithColorType, Rgb};
 
 pub type MandelbrotImage = ImageBuffer<Rgb<u8>, Vec<u8>>;
 
-/// A nice abstraction to handle instantiating various colors.
 #[derive(Debug, Clone, Copy)]
-pub struct Color;
+pub struct Color {
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
+}
 
 impl Color {
-    /// Create a new grayscale color from a single luminance value.
-    pub fn grayscale(l: f32) -> Rgb<u8> {
-        assert!((0.0..=1.0).contains(&l));
-        let v = (l * 255.0) as u8;
+    pub const BLACK: Color = Color::new(0.0, 0.0, 0.0);
+    pub const WHITE: Color = Color::new(1.0, 1.0, 1.0);
 
-        Rgb([v, v, v])
+    #[inline]
+    pub const fn new(r: f32, g: f32, b: f32) -> Color {
+        Color { r, g, b }
     }
 
-    /// Create a color from the given `r`, `g`, and `b` values.
-    pub fn rgb(r: f32, g: f32, b: f32) -> Rgb<u8> {
-        assert!((0.0..=1.0).contains(&r));
-        assert!((0.0..=1.0).contains(&g));
-        assert!((0.0..=1.0).contains(&b));
+    #[inline]
+    pub const fn grayscale(l: f32) -> Color {
+        Color { r: l, g: l, b: l }
+    }
 
+    #[inline]
+    pub fn cos(self) -> Color {
+        Color {
+            r: self.r.cos(),
+            g: self.g.cos(),
+            b: self.b.cos(),
+        }
+    }
+
+    #[inline]
+    fn clamp(self, low: f32, high: f32) -> Color {
+        Color {
+            r: self.r.clamp(low, high),
+            g: self.g.clamp(low, high),
+            b: self.b.clamp(low, high),
+        }
+    }
+}
+
+impl Add<Color> for Color {
+    type Output = Color;
+
+    #[inline]
+    fn add(self, rhs: Color) -> Self::Output {
+        Color {
+            r: self.r + rhs.r,
+            g: self.g + rhs.g,
+            b: self.b + rhs.b,
+        }
+    }
+}
+
+impl Mul<Color> for Color {
+    type Output = Color;
+
+    #[inline]
+    fn mul(self, rhs: Color) -> Self::Output {
+        Color {
+            r: self.r * rhs.r,
+            g: self.g * rhs.g,
+            b: self.b * rhs.b,
+        }
+    }
+}
+
+impl Mul<f32> for Color {
+    type Output = Color;
+
+    #[inline]
+    fn mul(self, rhs: f32) -> Self::Output {
+        Color {
+            r: self.r * rhs,
+            g: self.g * rhs,
+            b: self.b * rhs,
+        }
+    }
+}
+
+impl Mul<Color> for f32 {
+    type Output = Color;
+
+    #[inline]
+    fn mul(self, rhs: Color) -> Self::Output {
+        Color {
+            r: rhs.r * self,
+            g: rhs.g * self,
+            b: rhs.b * self,
+        }
+    }
+}
+
+impl From<Color> for Rgb<u8> {
+    fn from(v: Color) -> Self {
+        let c = v.clamp(0.0, 1.0);
         Rgb([
-            (r * 255.0) as u8,
-            (g * 255.0) as u8,
-            (b * 255.0) as u8,
+            (c.r * 255.0) as u8,
+            (c.g * 255.0) as u8,
+            (c.b * 255.0) as u8,
         ])
     }
 }
