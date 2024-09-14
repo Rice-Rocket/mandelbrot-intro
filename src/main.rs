@@ -62,6 +62,27 @@ fn transform(mut c: Complex<f32>) -> Complex<f32> {
     c * SCALE + CENTER
 }
 
+#[inline]
+fn palette(mut t: f32, phase: f32) -> Color {
+    // DC Offset
+    const A: Color = Color::new(0.5, 0.5, 0.5);
+    // Amplitude
+    const B: Color = Color::new(0.5, 0.5, 0.5);
+    // Frequency
+    const C: Color = Color::new(1.0, 1.0, 1.0);
+    // Phase
+    const D: Color = Color::new(0.0, 0.1, 0.2);
+
+    // Shift `t` by the `phase` and wrap around at the integer bound.
+    t = (t + phase).fract();
+
+    // Procedural palette generator by Inigo Quilez.
+    // See: http://iquilezles.org/articles/palettes/
+    //
+    // Generate new palettes using: http://dev.thi.ng/gradients/
+    A + B * Color::cos(std::f32::consts::TAU * (C * t + D))
+}
+
 fn main() {
     // Create a new image with a width and height of IMAGE_SIZE.
     let mut im = MandelbrotImage::new(IMAGE_SIZE, IMAGE_SIZE);
@@ -87,8 +108,11 @@ fn main() {
             // Evaluate the mandelbrot set at `c`.
             let m = mandelbrot(c);
 
+            // Find the color associated with weight `m` on the mandelbrot set.
+            let rgb = palette(m, 0.4);
+
             // Plot the result at the pixel coordinates.
-            im.put_pixel(x, y, Color::grayscale(m));
+            im.put_pixel(x, y, rgb.into());
         }
     }
 
