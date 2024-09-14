@@ -8,4 +8,5 @@ For more complex upgrades, you can visit the other branches.
 
 ## Screenshots
 
-![mandelbrot](./screenshots/mandelbrot.png)
+![mandelbrot-full](./screenshots/mandelbrot-full.png)
+![mandelbrot-zoomed](./screenshots/mandelbrot-zoomed.png)
