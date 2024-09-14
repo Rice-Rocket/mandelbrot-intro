@@ -3,7 +3,7 @@
 ## Description
 
 This serves as a gentle introduction to both Rust and the worlderful world of fractal rendering.
-The current branch (l5_palettes) provides an implementation of a Mandelbrot set renderer which includes coloring based on orbit trapping and color palettes, on top of the ability to zoom into the set.
+The current branch (l6_optimazation) provides an implementation of the mandelbrot function which is further optimized to reduce expensive operations. 
 For more complex upgrades, you can visit the other branches.
 
 ## Screenshots
