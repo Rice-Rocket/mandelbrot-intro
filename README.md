@@ -3,7 +3,7 @@
 ## Description
 
 This serves as a gentle introduction to both Rust and the worlderful world of fractal rendering.
-The current branch (l3_transforms) provides an implementation of a Mandelbrot set renderer which includes the ability to zoom into the set at an arbitrary location, on top of supporting basic coloring.
+The current branch (l4_orbit_trapping) provides an implementation of a Mandelbrot set renderer which includes coloring based on orbit trapping, on top of the ability to zoom into the set.
 For more complex upgrades, you can visit the other branches.
 
 ## Screenshots

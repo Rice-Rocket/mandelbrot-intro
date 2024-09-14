@@ -4,7 +4,8 @@ mod util;
 
 // The number of iterations used to find the edge of the mandelbrot set.
 // Note that larger numbers here will be slower to calculate, but lead to more detailed results.
-const NUM_ITERATIONS: u32 = 1000;
+const NUM_ITERATIONS: u32 = 100;
+const INV_NUM_INTERATIONS: f32 = 1.0 / NUM_ITERATIONS as f32;
 // The resolution of the image in pixels.
 // Final image will have IMAGE_SIZE x IMAGE_SIZE pixels.
 const IMAGE_SIZE: u32 = 2048;
@@ -26,18 +27,31 @@ fn mandelbrot(c: Complex<f32>) -> f32 {
         // z = z² + c
         z = z * z + c;
 
+        // Compute the absolute value (magnitude) of `z`.
+        // This is equivalent to its distance from the origin.
+        let z_mag = z.abs();
+
         // If `z` escapes the set, exit
-        if z.abs() > 2.0 {
-            // Color the pixel based on the number of iterations it completed before escaping.
-            // This leads to brighter colors near the edge of the set.
-            // The logarithm ensures a nice falloff even with more iterations, while clamping it
-            // ensures no pixels are too bright or dark.
-            return f32::log(n as f32, NUM_ITERATIONS as f32).clamp(0.0, 1.0);
+        if z_mag > 2.0 {
+            // Return the weight based on orbit trapping.
+            return weight(n, z_mag);
         }
     }
 
     // If `z` never escapes the set, return 0
     0.0
+}
+
+#[inline]
+fn weight(n: u32, z_mag: f32) -> f32 {
+    // Color based on distance from the set.
+    // Logarithms ensure a nice falloff. 
+    let nu = f32::log2(f32::log10(z_mag) / 2.0);
+    // Weight the color also based on the number of iterations to demonstrate the finer details
+    // that come with higher iteration counts.
+    let w = ((n + 1) as f32 - nu) * INV_NUM_INTERATIONS;
+    // Clamp to ensure no pixels are too bright or dark.
+    w.clamp(0.0, 1.0)
 }
 
 #[inline]
